@@ -28,12 +28,13 @@ Write-Host *Get Packate paht*
 $packagePath = Join-Path ($currentLocation + $releaseFolder + "\sharepoint\") $packageConfig.paths.zippedPackage -Resolve #Join-Path "sharepoint/" $packageConfig.paths.zippedPackage -Resolve
 Write-Host "packagePath: $packagePath"
 
-$skipFeatureDeployment = $packageConfig.solution.skipFeatureDeployment
-Write-Host "skip Feature Deployment:$skipFeatureDeployment"
-
-Write-Host (Connect-PnPOnline -AppId $appId -AppSecret $appSecret -Url $catalogSite)
-
+Write-host *Start Coonect PnPOnline*
+Write-Host (Connect-PnPOnline -AppId :$appId -AppSecret :$appSecret -Url :$catalogSite)
 Connect-PnPOnline -AppId $appId -AppSecret $appSecret -Url $catalogSite 
+
+Write-Host "read skip feature deployment"
+$skipFeatureDeployment = $packageConfig.solution.skipFeatureDeployment
+Write-Host "skip Feature Deployment: $skipFeatureDeployment"
 
 # Adding and publishing the App package
 If ($skipFeatureDeployment -ne $true) {

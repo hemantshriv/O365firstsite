@@ -13,12 +13,25 @@ Param(
 Write-Host ***************************************** -ForegroundColor Yellow
 Write-Host * Uploading the sppkg on the AppCatalog * -ForegroundColor Yellow
 Write-Host ***************************************** -ForegroundColor Yellow
+
+Write-Host *Get Current Location*
 $currentLocation = Get-Location | Select-Object -ExpandProperty Path
+
+Write-Host *Show Current Location*
 Write-Host ($currentLocation + $releaseFolder + "\config\package-solution.json")
+
+Write-Host *Get Packate Config*
 $packageConfig = Get-Content -Raw -Path ($currentLocation + $releaseFolder + "\config\package-solution.json") | ConvertFrom-Json
+Write-Host "Show Packate Config: $packageConfig"
+
+Write-Host *Get Packate paht*
 $packagePath = Join-Path ($currentLocation + $releaseFolder + "\sharepoint\") $packageConfig.paths.zippedPackage -Resolve #Join-Path "sharepoint/" $packageConfig.paths.zippedPackage -Resolve
 Write-Host "packagePath: $packagePath"
+
 $skipFeatureDeployment = $packageConfig.solution.skipFeatureDeployment
+Write-Host "skip Feature Deployment:$skipFeatureDeployment"
+
+Write-Host (Connect-PnPOnline -AppId $appId -AppSecret $appSecret -Url $catalogSite)
 
 Connect-PnPOnline -AppId $appId -AppSecret $appSecret -Url $catalogSite 
 
